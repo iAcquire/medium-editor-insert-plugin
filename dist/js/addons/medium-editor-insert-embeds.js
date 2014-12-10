@@ -153,34 +153,36 @@
     },
 
     removeToolbar : function () {
-      $(".mediumInsert-embedsWire").remove();
+      if($(".mediumInsert-embedsWire").length){
+        $(".mediumInsert-embedsWire").remove();  
+      }
     },
 
-      getOEmbedHTML: function(url, cb) {
-          $.ajax({
-              url: this.options.oembedProxy,
-              dataType: "json",
-              data: {
-                  url: url
-              },
-              success: function(data, textStatus, jqXHR) {
-                  cb(null, data, jqXHR);
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                  var responseJSON = (function() {
-                      try {
-                          return JSON.parse(jqXHR.responseText);
-                      } catch(e) {}
-                  }());
+    getOEmbedHTML: function(url, cb) {
+        $.ajax({
+            url: this.options.oembedProxy,
+            dataType: "json",
+            data: {
+                url: url
+            },
+            success: function(data, textStatus, jqXHR) {
+                cb(null, data, jqXHR);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                var responseJSON = (function() {
+                    try {
+                        return JSON.parse(jqXHR.responseText);
+                    } catch(e) {}
+                }());
 
-                  cb((responseJSON && responseJSON.error) || jqXHR.status || errorThrown.message, responseJSON, jqXHR);
-              }
-          });
+                cb((responseJSON && responseJSON.error) || jqXHR.status || errorThrown.message, responseJSON, jqXHR);
+            }
+        });
       },
 
       convertUrlToEmbedTag : function (url) {
           // We didn't get something we expect so let's get out of here.
-          if (!(new RegExp(['youtube', 'yout.be', 'vimeo', 'facebook', 'instagram'].join("|")).test(url))) return false;
+          if (!(new RegExp(['youtube', 'youtu.be', 'vimeo', 'facebook', 'instagram'].join("|")).test(url))) return false;
 
           var embed_tag = url.replace(/\n?/g, '').replace(/^((http(s)?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|v\/)?)([a-zA-Z0-9\-_]+)(.*)?$/, '<div class="video"><iframe width="420" height="315" src="//www.youtube.com/embed/$7" frameborder="0" allowfullscreen></iframe></div>')
               .replace(/^http:\/\/vimeo\.com(\/.+)?\/([0-9]+)$/, '<iframe src="//player.vimeo.com/video/$2" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>')
