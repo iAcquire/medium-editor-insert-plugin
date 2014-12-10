@@ -97,12 +97,10 @@
           }
         });
       this.$el.on('mouseenter', '.mediumInsert-embeds', function(){
-console.log('mouseenter', $(this));
         $(this).append('<a class="mediumInsert-embedIcon mediumInsert-embedRemove"></a>');
       });
 
       this.$el.on('mouseleave', '.mediumInsert-embeds', function(){
-console.log('mouseleave', $(this));
         $('.mediumInsert-embedIcon', this).remove(); 
       });
       this.$el.on('click', '.mediumInsert-embedRemove', function () {
