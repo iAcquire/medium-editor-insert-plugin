@@ -107,20 +107,6 @@
         $(this).parent().remove();
         $.fn.mediumInsert.insert.deselect();
         that.$el.trigger('keyup').trigger('input');
-        /*
-        var img = $(this).siblings('img').attr('src');
-
-        if ($(this).parent().siblings().length === 0) {
-          $(this).parent().parent().parent().removeClass('small');
-        }
-        $(this).parent().remove();
-
-        that.deleteFile(img, that);
-
-        $.fn.mediumInsert.insert.deselect();
-
-        that.$el.trigger('keyup').trigger('input');
-        */
       });
     },
     setEnterActionEvents : function () {
