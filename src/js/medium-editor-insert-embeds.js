@@ -144,29 +144,31 @@
     },
 
     removeToolbar : function () {
-      $(".mediumInsert-embedsWire").remove();
+      if($(".mediumInsert-embedsWire").length){
+        $(".mediumInsert-embedsWire").remove();  
+      }
     },
 
-      getOEmbedHTML: function(url, cb) {
-          $.ajax({
-              url: this.options.oembedProxy,
-              dataType: "json",
-              data: {
-                  url: url
-              },
-              success: function(data, textStatus, jqXHR) {
-                  cb(null, data, jqXHR);
-              },
-              error: function(jqXHR, textStatus, errorThrown) {
-                  var responseJSON = (function() {
-                      try {
-                          return JSON.parse(jqXHR.responseText);
-                      } catch(e) {}
-                  }());
+    getOEmbedHTML: function(url, cb) {
+        $.ajax({
+            url: this.options.oembedProxy,
+            dataType: "json",
+            data: {
+                url: url
+            },
+            success: function(data, textStatus, jqXHR) {
+                cb(null, data, jqXHR);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                var responseJSON = (function() {
+                    try {
+                        return JSON.parse(jqXHR.responseText);
+                    } catch(e) {}
+                }());
 
-                  cb((responseJSON && responseJSON.error) || jqXHR.status || errorThrown.message, responseJSON, jqXHR);
-              }
-          });
+                cb((responseJSON && responseJSON.error) || jqXHR.status || errorThrown.message, responseJSON, jqXHR);
+            }
+        });
       },
 
       convertUrlToEmbedTag : function (url) {
