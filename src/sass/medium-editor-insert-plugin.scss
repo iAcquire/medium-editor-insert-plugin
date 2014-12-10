@@ -148,6 +148,22 @@
       cursor: pointer; }
   }
 
+  .mediumInsert-embeds {
+    .mediumInsert-embedIcon {
+      position: absolute;
+      top: 1em;
+      width: 30px;
+      height: 30px;
+      background-color: #3b3b3b;
+      background-repeat: no-repeat;
+      background-position: center center;
+      cursor: pointer; }
+  }
+
+  .mediumInsert-embedRemove {
+    right: 0;
+    background-image: url(../images/remove.png); }
+
   .mediumInsert-imageRemove {
     right: 0;
     background-image: url(../images/remove.png); }

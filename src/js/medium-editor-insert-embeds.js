@@ -82,7 +82,10 @@
 
       this.$el
         .on('blur', '.mediumInsert-embedsText', function () {
-          that.removeToolbar();
+          setTimeout(function(){
+            that.removeToolbar();  
+          },10);
+          
         })
         // Fix #72
         // Workaround for CTRL+V not working in FF, when cleanPastedHTML and forcePlainText options on editor are set to true,
@@ -93,7 +96,34 @@
             $(this).val(e.originalEvent.clipboardData.getData('text/plain'));
           }
         });
+      this.$el.on('mouseenter', '.mediumInsert-embeds', function(){
+console.log('mouseenter', $(this));
+        $(this).append('<a class="mediumInsert-embedIcon mediumInsert-embedRemove"></a>');
+      });
 
+      this.$el.on('mouseleave', '.mediumInsert-embeds', function(){
+console.log('mouseleave', $(this));
+        $('.mediumInsert-embedIcon', this).remove(); 
+      });
+      this.$el.on('click', '.mediumInsert-embedRemove', function () {
+        $(this).parent().remove();
+        $.fn.mediumInsert.insert.deselect();
+        that.$el.trigger('keyup').trigger('input');
+        /*
+        var img = $(this).siblings('img').attr('src');
+
+        if ($(this).parent().siblings().length === 0) {
+          $(this).parent().parent().parent().removeClass('small');
+        }
+        $(this).parent().remove();
+
+        that.deleteFile(img, that);
+
+        $.fn.mediumInsert.insert.deselect();
+
+        that.$el.trigger('keyup').trigger('input');
+        */
+      });
     },
     setEnterActionEvents : function () {
       var that = this;
@@ -144,9 +174,7 @@
     },
 
     removeToolbar : function () {
-      if($(".mediumInsert-embedsWire").length){
-        $(".mediumInsert-embedsWire").remove();  
-      }
+      $(".mediumInsert-embedsWire").remove(); 
     },
 
     getOEmbedHTML: function(url, cb) {
