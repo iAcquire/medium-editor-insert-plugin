@@ -1,6 +1,32 @@
 /* global MediumEditor */
 
 (function ($) {
+
+  // http://stackoverflow.com/questions/4176923/html-of-selected-text
+  // by Tim Down
+  function getSelectionHtml() {
+    var i,
+        html = '',
+        sel,
+        len,
+        container;
+    if (window.getSelection !== undefined) {
+      sel = window.getSelection();
+      if (sel.rangeCount) {
+        container = document.createElement('div');
+        for (i = 0, len = sel.rangeCount; i < len; i += 1) {
+          container.appendChild(sel.getRangeAt(i).cloneContents());
+        }
+        html = container.innerHTML;
+      }
+    } else if (document.selection !== undefined) {
+      if (document.selection.type === 'Text') {
+        html = document.selection.createRange().htmlText;
+      }
+    }
+    return html;
+  }
+
   /*
   * Private storage of registered addons
   */
@@ -397,7 +423,30 @@
         }
       });
 
+      $el.on('cut copy', function(e){
 
+        // Strip the insert placeholders etc. from the copy operation
+        var $temp = $('<div></div>').html(getSelectionHtml().replace(/<\/([a-zA-Z]+)\>/g,'</$1>\n'));
+        $temp.find('.mediumInsert').remove();
+
+        if(e.originalEvent.clipboardData){
+          e.preventDefault();
+          e.originalEvent.clipboardData.setData('text/html', $temp.html());
+          e.originalEvent.clipboardData.setData('text/plain', $temp.text());
+        }
+
+        // IE
+        if(window.clipboardData){
+          e.preventDefault();
+          window.clipboardData.setData('Text', $temp.text());
+        }
+
+        // On a cut operation, delete the selection as well
+        if(e.type === 'cut'){
+          document.execCommand('delete');
+        }
+
+      });
       // Fix #29
       // Sometimes in Firefox when you hit enter, <br type="_moz"> appears instead of <p><br></p>
       // If it happens, force to wrap the <br> into a paragraph
