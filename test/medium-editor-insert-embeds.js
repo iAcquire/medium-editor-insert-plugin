@@ -248,7 +248,7 @@ asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an o
   });
 });
 
-asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an oembedProxy is specified', function(){
+asyncTest('getOEmbedHTML() sends error to cb if proxy delegate returns error', function(){
   function proxyDelegate(){
     return "Unsupported url";
   }
@@ -258,5 +258,27 @@ asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an o
     start();
     equal('Unsupported url', error, "Error is sent to cb if delegate returns an error vs null");
   });
+});
+
+asyncTest('setEnterActionEvents() does NOT alert an error if proxy delegate is supplied', function(){
+
+  function proxyDelegate(){
+    start();
+    return "Unsupported url";
+  }
+
+  this.addon.options.oembedProxyDelegate = proxyDelegate;
+  this.addon.options.oembedProxy = 'http://medium.iframe.ly/api/oembed?iframe=1';
+
+  var alertInvoked = false;
+
+  $('#qunit-fixture').html('<input class="mediumInsert-embedsText" value="https://twitter.com/phpstorm/status/467987788659720192">');
+
+  this.stub(window, 'alert', function () {
+    window.alert.restore();
+    alertInvoked = true;
+  });
+  this.addon.setEnterActionEvents();
+  equal(alertInvoked, false, 'alert was not invoked');
 });
 
