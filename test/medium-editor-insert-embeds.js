@@ -14,6 +14,13 @@ module("embeds", {
     this.addon = $.fn.mediumInsert.getAddon('embeds');
     this.addon.$el = $('#qunit-fixture');
     $.fn.mediumInsert.insert.$el = $('#qunit-fixture');
+    this.addon.init();
+  },
+  teardown : function() {
+    this.addon.defaults = {
+      urlPlaceholder: 'Paste or type a link'
+    };
+    this.addon.options = {};
   }
 });
 
@@ -226,3 +233,30 @@ test('preparePreviousEmbeds() wraps an embed to a placeholder', function () {
 
   ok($('.mediumInsert-embeds').parent().hasClass('mediumInsert-placeholder'), 'embed wraped to a placeholder');
 });
+
+asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an oembedProxy is specified', function(){
+  var invoked = false;
+  function proxyDelegate(oembedResp){
+    invoked = true;
+    return null;
+  }
+  this.addon.options.oembedProxyDelegate = proxyDelegate;
+  this.addon.options.oembedProxy = 'http://medium.iframe.ly/api/oembed?iframe=1';
+  this.addon.getOEmbedHTML('http://vimeo.com/94923911', function(){
+    start();
+    equal(true, invoked, 'Delegate was invoked');
+  });
+});
+
+asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an oembedProxy is specified', function(){
+  function proxyDelegate(oembedResp){
+    return "Unsupported url";
+  }
+  this.addon.options.oembedProxyDelegate = proxyDelegate;
+  this.addon.options.oembedProxy = 'http://medium.iframe.ly/api/oembed?iframe=1';
+  this.addon.getOEmbedHTML('http://vimeo.com/94923911', function(error, embed){
+    start();
+    equal('Unsupported url', error, "Error is sent to cb if delegate returns an error vs null");
+  });
+});
+
