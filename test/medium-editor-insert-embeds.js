@@ -236,7 +236,7 @@ test('preparePreviousEmbeds() wraps an embed to a placeholder', function () {
 
 asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an oembedProxy is specified', function(){
   var invoked = false;
-  function proxyDelegate(oembedResp){
+  function proxyDelegate(){
     invoked = true;
     return null;
   }
@@ -249,12 +249,12 @@ asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an o
 });
 
 asyncTest('getOEmbedHTML() calls oembedProxyDelegate if it\'s specified and an oembedProxy is specified', function(){
-  function proxyDelegate(oembedResp){
+  function proxyDelegate(){
     return "Unsupported url";
   }
   this.addon.options.oembedProxyDelegate = proxyDelegate;
   this.addon.options.oembedProxy = 'http://medium.iframe.ly/api/oembed?iframe=1';
-  this.addon.getOEmbedHTML('http://vimeo.com/94923911', function(error, embed){
+  this.addon.getOEmbedHTML('http://vimeo.com/94923911', function(error){
     start();
     equal('Unsupported url', error, "Error is sent to cb if delegate returns an error vs null");
   });

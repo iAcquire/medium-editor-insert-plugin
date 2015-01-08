@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v0.3.4 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v0.3.9 - jQuery insert plugin for MediumEditor
  *
  * https://github.com/orthes/medium-editor-insert-plugin
  * 
@@ -156,7 +156,6 @@
               if (oebmed && !oebmed.html && oebmed.type === 'photo' && oebmed.url) {
                   html = '<img src="' + oebmed.url + '" />';
               }
-
               processEmbedTag(html);
           });
         } else {
@@ -171,6 +170,7 @@
     },
 
     getOEmbedHTML: function(url, cb) {
+        var that = this;
         $.ajax({
             url: this.options.oembedProxy,
             dataType: "json",
@@ -178,7 +178,11 @@
                 url: url
             },
             success: function(data, textStatus, jqXHR) {
-                cb(null, data, jqXHR);
+              var result = null;
+              if (that.options.oembedProxyDelegate && typeof that.options.oembedProxyDelegate === 'function'){
+                result = that.options.oembedProxyDelegate.call(that, data);
+              }
+              cb(result, data, jqXHR);  
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 var responseJSON = (function() {
