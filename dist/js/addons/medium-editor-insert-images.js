@@ -1,5 +1,5 @@
 /*! 
- * medium-editor-insert-plugin v0.4.1 - jQuery insert plugin for MediumEditor
+ * medium-editor-insert-plugin v0.4.2 - jQuery insert plugin for MediumEditor
  *
  * https://github.com/orthes/medium-editor-insert-plugin
  * 
@@ -378,7 +378,7 @@
       
       this.$el.on('click', '.mediumInsert-imageLink', function () {
         var $placeholder = $(this).closest('.mediumInsert-placeholder'),
-            $formHtml = $('<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-imageLinkWire" style="display: block;"><input type="text" value="" placeholder="' + that.options.urlPlaceholder + '" class="mediumInsert-imageLinkText medium-editor-toolbar-anchor-input"/><a href="#" class="medium-editor-toobar-anchor-save">✓</a><a href="#" class="medium-editor-toobar-anchor-close">×</a></div>');
+            $formHtml = $('<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-imageLinkWire" style="display: block;"><input type="text" value="" placeholder="' + that.options.urlPlaceholder + '" class="mediumInsert-imageLinkText medium-editor-toolbar-anchor-input"/><a href="#" class="medium-editor-toobar-anchor-save">&#10003;</a><a href="#" class="medium-editor-toobar-anchor-close">&times;</a></div>');
         
         $formHtml.appendTo($placeholder);
         setTimeout(function () {

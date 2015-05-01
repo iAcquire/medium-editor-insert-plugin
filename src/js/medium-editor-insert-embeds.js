@@ -43,7 +43,7 @@
     add : function ($placeholder) {
       $.fn.mediumInsert.insert.deselect();
 
-      var formHtml = '<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-embedsWire" style="display: block;"><input type="text" value="" placeholder="' + this.options.urlPlaceholder + '" class="mediumInsert-embedsText medium-editor-toolbar-anchor-input"><a href="#" class="medium-editor-toobar-anchor-save">✓</a><a href="#" class="medium-editor-toobar-anchor-close">×</a></div>';
+      var formHtml = '<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-embedsWire" style="display: block;"><input type="text" value="" placeholder="' + this.options.urlPlaceholder + '" class="mediumInsert-embedsText medium-editor-toolbar-anchor-input"><a href="#" class="medium-editor-toobar-anchor-save">&#10003;</a><a href="#" class="medium-editor-toobar-anchor-close">&times;</a></div>';
       $(formHtml).appendTo($placeholder.prev());
       setTimeout(function () {
         $placeholder.prev().find('input').focus();
