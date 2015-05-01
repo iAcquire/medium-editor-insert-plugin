@@ -369,7 +369,7 @@
       
       this.$el.on('click', '.mediumInsert-imageLink', function () {
         var $placeholder = $(this).closest('.mediumInsert-placeholder'),
-            $formHtml = $('<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-imageLinkWire" style="display: block;"><input type="text" value="" placeholder="' + that.options.urlPlaceholder + '" class="mediumInsert-imageLinkText medium-editor-toolbar-anchor-input"></div>');
+            $formHtml = $('<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-imageLinkWire" style="display: block;"><input type="text" value="" placeholder="' + that.options.urlPlaceholder + '" class="mediumInsert-imageLinkText medium-editor-toolbar-anchor-input"/><a href="#" class="medium-editor-toobar-anchor-save">✓</a><a href="#" class="medium-editor-toobar-anchor-close">×</a></div>');
         
         $formHtml.appendTo($placeholder);
         setTimeout(function () {
@@ -409,13 +409,34 @@
           }
         })
         .on('blur', '.mediumInsert-imageLinkText', function () {
-          $('.mediumInsert-imageLinkWire').remove();
+            setTimeout(function(){
+              $('.mediumInsert-imageLinkWire').remove();
+            }, 250);
         })
         .on('paste', '.mediumInsert-imageLinkText', function (e) {
           if ($.fn.mediumInsert.insert.isFirefox && e.originalEvent.clipboardData) {
             $(this).val(e.originalEvent.clipboardData.getData('text/plain'));
           }
         });
+      this.$el.on('click', '.medium-editor-toobar-anchor-save', function(){
+        var $placeholder = $(this).closest('.mediumInsert-placeholder');
+
+        $placeholder.find('.mediumInsert-images:first').find('img').wrap('<a href="' + $('input.mediumInsert-imageLinkText').val() + '" target="_blank"></a>');
+        $placeholder.find('.mediumInsert-imageLink')
+            .removeClass('mediumInsert-imageLink')
+            .addClass('mediumInsert-imageUnlink');
+
+        // Workaround for "Uncaught NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is no longer a child of this node. Perhaps it was moved in a 'blur' event handler?"
+        try {
+          $('.mediumInsert-imageLinkWire').remove();
+        } catch (err) {
+        }
+
+        that.$el.trigger('keyup').trigger('input');
+      });
+      this.$el.on('click', '.medium-editor-toobar-anchor-close', function(){
+        $('.mediumInsert-imageLinkWire').remove();
+      });
     },
 
     /**

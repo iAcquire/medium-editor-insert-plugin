@@ -41,7 +41,7 @@ test('insertButton() returns html', function () {
 });
 
 test('insertButton() returns html with fontawesome', function () {
-  equal(this.addon.insertButton('fontawesome').match(/fa\-code/).length, 1, 'expected button returned');
+  equal(this.addon.insertButton('fontawesome').match(/fa\-video\-camera/).length, 1, 'expected button returned');
 });
 
 test('insertButton() returns html with override icon', function () {

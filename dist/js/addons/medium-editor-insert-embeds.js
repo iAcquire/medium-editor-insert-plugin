@@ -34,7 +34,7 @@
     insertButton : function (buttonLabels) {
       var label = 'Embed';
       if (buttonLabels === 'fontawesome' || typeof buttonLabels === 'object' && !!(buttonLabels.fontawesome)) {
-        label = '<i class="fa fa-code"></i>';
+        label = '<i class="fa fa-video-camera"></i>';
       }
 
       if (typeof buttonLabels === 'object' && buttonLabels.embed) {
@@ -52,8 +52,7 @@
     add : function ($placeholder) {
       $.fn.mediumInsert.insert.deselect();
 
-
-      var formHtml = '<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-embedsWire" style="display: block;"><input type="text" value="" placeholder="' + this.options.urlPlaceholder + '" class="mediumInsert-embedsText medium-editor-toolbar-anchor-input"></div>';
+      var formHtml = '<div class="medium-editor-toolbar medium-editor-toolbar-active medium-editor-toolbar-form-anchor mediumInsert-embedsWire" style="display: block;"><input type="text" value="" placeholder="' + this.options.urlPlaceholder + '" class="mediumInsert-embedsText medium-editor-toolbar-anchor-input"><a href="#" class="medium-editor-toobar-anchor-save">✓</a><a href="#" class="medium-editor-toobar-anchor-close">×</a></div>';
       $(formHtml).appendTo($placeholder.prev());
       setTimeout(function () {
         $placeholder.prev().find('input').focus();
@@ -116,6 +115,15 @@
         $(this).parent().remove();
         $.fn.mediumInsert.insert.deselect();
         that.$el.trigger('keyup').trigger('input');
+      });
+
+      this.$el.on('click', '.medium-editor-toobar-anchor-save', function(){
+        that.setEnterActionEvents();
+        that.removeToolbar();
+      });
+
+      this.$el.on('click', '.medium-editor-toobar-anchor-close', function(){
+        that.removeToolbar();
       });
     },
     setEnterActionEvents : function () {

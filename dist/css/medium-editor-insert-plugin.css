@@ -116,8 +116,7 @@
     -webkit-transform: scale(0);
         -ms-transform: scale(0);
             transform: scale(0);
-    -webkit-transition: all 0.08s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-            transition: all 0.08s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    transition: all 0.08s cubic-bezier(0.2, 0.3, 0.25, 0.9);
     display: block;
     width: 18px;
     height: 18px;
