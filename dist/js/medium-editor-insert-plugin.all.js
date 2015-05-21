@@ -909,12 +909,19 @@
     */
 
     preparePreviousImages: function () {
+      var options = this.options;
       this.$el.find('.mediumInsert-images').each(function() {
         var $parent = $(this).parent();
         if (!$parent.hasClass('mediumInsert-placeholder')) {
-          $parent.html($.fn.mediumInsert.insert.getButtons('images') +
-            '<div class="mediumInsert-placeholder" draggable="true">' + $parent.html() + '</div>'
-          );
+          if(options.oneImagePerBlock === true){
+            $parent.html(
+              '<div class="mediumInsert-placeholder" draggable="true">' + $parent.html() + '</div>'
+            );
+          }else{
+            $parent.html($.fn.mediumInsert.insert.getButtons('images') +
+              '<div class="mediumInsert-placeholder" draggable="true">' + $parent.html() + '</div>'
+            );
+          }
         }
       });
     },
@@ -981,6 +988,10 @@
         $img.load(function () {
           $img.parent().mouseleave().mouseenter();
         });
+        if(this.options.oneImagePerBlock === true){
+          $placeholder.find().remove('mediumInsert-buttons');
+        }
+
       } else {
         $progress.before('<div class="mediumInsert-error">There was a problem uploading the file.</div>');
 
